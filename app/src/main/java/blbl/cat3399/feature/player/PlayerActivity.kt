@@ -3876,7 +3876,7 @@ class PlayerActivity : BaseActivity() {
         }
     }
     private fun setupSleepTimerButton() {
-    val btnSleepTimer = findViewById<ImageButton>(R.id.btn_sleep_timer)
+    val btnSleepTimer = binding.btnSleepTimer
     btnSleepTimer?.setOnClickListener {
         val options = arrayOf("取消定时", "15 分钟", "30 分钟", "60 分钟")
         AlertDialog.Builder(this)
