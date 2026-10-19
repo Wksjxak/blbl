@@ -252,24 +252,25 @@
             app:layout_constraintTop_toTopOf="@id/btn_back" />
 
         <ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="@dimen/player_top_button_size"
-            android:layout_height="@dimen/player_top_button_size"
-            android:background="?attr/blblFocusBgRound"
-            android:focusable="true"
-            android:padding="@dimen/player_top_button_padding"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_settings"
-            app:tint="@color/player_button_tint"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/btn_back"
-            app:layout_constraintEnd_toStartOf="@id/btn_sleep_timer"
-            app:layout_constraintTop_toTopOf="@id/btn_back" />
-            <ImageButton
+    android:id="@+id/btn_settings"
+    android:layout_width="@dimen/player_top_button_size"
+    android:layout_height="@dimen/player_top_button_size"
+    android:background="?attr/blblFocusBgRound"
+    android:focusable="true"
+    android:padding="@dimen/player_top_button_padding"
+    android:scaleType="fitCenter"
+    android:src="@drawable/ic_settings"
+    app:tint="@color/player_button_tint"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/btn_back"
+    app:layout_constraintEnd_toStartOf="@+id/btn_sleep_timer"
+    app:layout_constraintTop_toTopOf="@id/btn_back" />
+
+<ImageButton
     android:id="@+id/btn_sleep_timer"
     android:layout_width="@dimen/player_top_button_size"
     android:layout_height="@dimen/player_top_button_size"
-    android:background="?attr/bblFocusBgRound"
+    android:background="?attr/blblFocusBgRound"
     android:focusable="true"
     android:padding="@dimen/player_top_button_padding"
     android:scaleType="fitCenter"
