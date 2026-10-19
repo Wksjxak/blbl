@@ -2,6 +2,10 @@
 
 package blbl.cat3399.feature.player
 
+import android.os.Handler
+import android.app.AlertDialog
+import android.widget.ImageButton
+import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
 import android.app.Activity
@@ -113,6 +117,8 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class PlayerActivity : BaseActivity() {
+    private var sleepTimerHandler: Handler? = null
+    private var sleepTimerRunnable: Runnable? = null
     override fun shouldRecreateOnUiScaleChange(): Boolean = true
 
     internal lateinit var binding: ActivityPlayerBinding
@@ -697,6 +703,7 @@ class PlayerActivity : BaseActivity() {
             )
         setContentView(binding.root)
         Immersive.apply(this, prefs.fullscreenEnabled)
+        setupSleepTimerButton()
         PlayerUiMode.applyVideo(this, binding)
         ensureBottomBarConstraintSets()
 
@@ -1902,6 +1909,7 @@ class PlayerActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        cancelSleepTimer()
         val t0 = SystemClock.elapsedRealtime()
         exitTraceDestroyAtMs = t0
         if (exitCleanupRequested || isFinishing || exitTraceStartAtMs > 0L) {
@@ -3867,4 +3875,43 @@ class PlayerActivity : BaseActivity() {
             }
         }
     }
+    private fun setupSleepTimerButton() {
+    val btnSleepTimer = findViewById<ImageButton>(R.id.btn_sleep_timer)
+    btnSleepTimer?.setOnClickListener {
+        val options = arrayOf("取消定时", "15 分钟", "30 分钟", "60 分钟")
+        AlertDialog.Builder(this)
+            .setTitle("定时退出播放")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> cancelSleepTimer()
+                    1 -> startSleepTimer(15)
+                    2 -> startSleepTimer(30)
+                    3 -> startSleepTimer(60)
+                }
+            }
+            .show()
+    }
+}
+
+private fun startSleepTimer(minutes: Int) {
+    cancelSleepTimer()
+    val millis = minutes * 60 * 1000L
+    Toast.makeText(this, "已开启定时：$minutes 分钟后退出", Toast.LENGTH_SHORT).show()
+
+    sleepTimerHandler = Handler(Looper.getMainLooper())
+    sleepTimerRunnable = Runnable {
+        runOnUiThread {
+            Toast.makeText(this, "时间到，退出播放", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+    }
+    sleepTimerHandler?.postDelayed(sleepTimerRunnable!!, millis)
+}
+
+private fun cancelSleepTimer() {
+    sleepTimerRunnable?.let { sleepTimerHandler?.removeCallbacks(it) }
+    sleepTimerHandler?.removeCallbacksAndMessages(null)
+    sleepTimerHandler = null
+    sleepTimerRunnable = null
+}
 }
